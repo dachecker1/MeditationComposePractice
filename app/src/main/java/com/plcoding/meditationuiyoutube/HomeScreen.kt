@@ -1,18 +1,30 @@
 package com.plcoding.meditationuiyoutube
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.google.android.material.chip.Chip
+import com.plcoding.meditationuiyoutube.ui.theme.ButtonBlue
+import com.plcoding.meditationuiyoutube.ui.theme.DarkerButtonBlue
 import com.plcoding.meditationuiyoutube.ui.theme.DeepBlue
+import com.plcoding.meditationuiyoutube.ui.theme.TextWhite
 
 @Composable
 fun HomeScreen() {
@@ -21,6 +33,7 @@ fun HomeScreen() {
         .background(DeepBlue)) {
         Column {
             GreetingSection()
+            ChipSection()
         }
     }
 }
@@ -53,5 +66,34 @@ fun GreetingSection(name: String = "Andrey") {
             tint = Color.White,
             modifier = Modifier.size(24.dp)
         )
+    }
+}
+
+@Preview
+@Composable
+fun ChipSection(
+    chips: List<String> = listOf("Sweet sleep", "Insomnia", "Depression"),
+) {
+    var selectedChip by remember {
+        mutableStateOf(0)
+    }
+    LazyRow {
+        items(chips.size) { pos ->
+            Box(contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .padding(start = 15.dp, top = 15.dp, bottom = 15.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .clickable {
+                        selectedChip = pos
+                    }
+                    .background(if (selectedChip == pos) ButtonBlue else DarkerButtonBlue)
+                    .padding(15.dp)
+            ) {
+                Text(
+                    text = chips[pos],
+                    color = TextWhite
+                )
+            }
+        }
     }
 }
